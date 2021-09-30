@@ -14,10 +14,11 @@
                     <span class="flex">entradas</span>
                 </div>
                 <x-jet-input type="text" class="flex-1 mx-4" placeholder="Buscar..." wire:model="search" />
-                @livewire('crear-empleados')
+                @livewire('productos.crear-productos')
             </div>
 
-            @if (count($empleado))
+
+            @if (count($productos))
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
@@ -55,16 +56,24 @@
                             </th>
                             <th scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                EDAD
+                                PRECIO
                             </th>
                             <th scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                ROL
+                                STOCK
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                DESCRIPCION
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Accion
                             </th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach ($empleado as $item)
+                        @foreach ($productos as $item)
                             <tr>
                                 <td class="px-6 py-4">
                                     <div class="text-sm text-gray-900">{{ $item->id }}</div>
@@ -73,10 +82,19 @@
                                     <div class="text-sm text-gray-900">{{ $item->nombre }}</div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ $item->edad }}
+                                    {{ $item->precio }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $item->stock }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $item->descripcion }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $item->imagen }}
                                 </td>
                                 <td class="px-1 py-4 flex">
-                                    @livewire('editar-empleados', ['empleado' => $item], key($item->id))
+                                    @livewire('productos.editar-productos', ['producto' => $item], key($item->id))
                                     <a class="font-bold flex ml-2 text-white py-2 px-4 bg-red-600 rounded cursor-pointer hover:bg-red-500"
                                         wire:click="$emit('deleteId', {{ $item->id }})">
                                         <i class='bx bxs-trash'></i>
@@ -87,9 +105,9 @@
                     </tbody>
                 </table>
 
-                @if ($empleado->hasPages())
+                @if ($productos->hasPages())
                     <div class="px-6 py-3">
-                        {{ $empleado->links() }}
+                        {{ $productos->links() }}
                     </div>
                 @endif
             @else
@@ -102,7 +120,7 @@
                                 </path>
                             </svg>
 
-                            <p class="mx-3">No existe nombre o edad que coincida</p>
+                            <p class="mx-3">No existe el producto...</p>
                         </div>
                     </div>
                 </div>
@@ -110,7 +128,6 @@
 
         </x-table>
     </div>
-
 
     @push('js')
         <script src="sweetalert2.all.min.js"></script>
@@ -126,17 +143,16 @@
                     confirmButtonText: 'Eliminar!'
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        Livewire.emitTo('productos.show-productos', 'deleteProduct', itemId);
                         Swal.fire(
                             'Eliminado!',
-                            'El empleado ha sido eliminado.',
+                            'El producto ha sido eliminado.',
                             'success'
                         )
-                        Livewire.emitTo('show-empleados', 'delete', itemId);
+
                     }
                 })
             })
         </script>
     @endpush
-
-
 </x-dashboard>

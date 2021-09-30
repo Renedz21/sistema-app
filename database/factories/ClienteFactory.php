@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Empleado;
+use App\Models\Cliente;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class EmpleadoFactory extends Factory
+class ClienteFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Empleado::class;
+    protected $model = Cliente::class;
 
     /**
      * Define the model's default state.
@@ -24,6 +24,7 @@ class EmpleadoFactory extends Factory
         return [
             'nombre' => $this->faker->name(),
             'edad' => $this->faker->randomNumber(2, true),
+            'dni' => $this->faker->randomNumber(8, true),
             'correo' => $this->faker->safeEmail(),
             'telefono' => $this->faker->phoneNumber(),
             'usuario' => $this->faker->userName(),
